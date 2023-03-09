@@ -1,3 +1,4 @@
+import pandas as pd
 from .server import Server
 from loguru import logger
 import numpy as np
@@ -88,6 +89,8 @@ class FedReg(Server):
     def train(self):
         logger.info("Train with {} workers...".format(self.clients_per_round))
         epochs = self.num_epochs
+        # dataframes to save the training and testing results
+        
         for r in range(self.num_rounds):
             self.round = r
 
@@ -99,10 +102,14 @@ class FedReg(Server):
                 else:
                     stats_train = stats
                 logger.info("-- TEST RESULTS --")
-                decode_stat(stats)
+                test_data = decode_stat(stats)
                 logger.info("-- TRAIN RESULTS --")
-                decode_stat(stats_train)
-
+                train_data = decode_stat(stats_train)
+                try:
+                    self.df_ts.append(pd.DataFrame({"accuracy": test_data[0],"loss": test_data[1]}))
+                    self.df_tr.append(pd.DataFrame({"accuracy": train_data[0],"loss": train_data[1]}))
+                except TypeError:
+                    pass
             indices, selected_clients = self.select_clients(r, num_clients=self.clients_per_round)
             np.random.seed(r)
             active_clients = np.random.choice(selected_clients, round(self.clients_per_round*(1.0-self.drop_percent)), replace=False)
@@ -135,6 +142,13 @@ class FedReg(Server):
         else:
             stats_train = stats
         logger.info("-- TEST RESULTS --")
-        decode_stat(stats)
+        test_data = decode_stat(stats)
         logger.info("-- TRAIN RESULTS --")
-        decode_stat(stats_train)
+        train_data = decode_stat(stats_train)
+        try:
+            self.df_ts.append(pd.DataFrame({"accuracy": test_data[0],"loss": test_data[1]}))
+            self.df_tr.append(pd.DataFrame({"accuracy": train_data[0],"loss": train_data[1]}))
+        except TypeError:
+            pass
+        self.df_ts.save_csv("results/tdf_ts.csv")
+        self.df_tr.save_csv("results/tdf_tr.csv")

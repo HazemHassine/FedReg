@@ -7,6 +7,7 @@ class Server(object):
     def __init__(self, config, Model, datasets, train_transform=None, test_transform=None, traincusdataset=None, evalcusdataset=None):
         super(Server, self).__init__()
         self.config = config
+        self.df_ts , self.df_tr = config["df_ts,df_tr"]
         self.model_param = config["model_param"]
         self.inner_opt = config["inner_opt"]
         self.clients_per_round = config["clients_per_round"]

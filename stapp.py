@@ -1,8 +1,10 @@
 import contextlib
+import copy
 import io
 import json
 import pprint
 import sys
+import pandas as pd
 from git import os
 
 import streamlit as st
@@ -30,6 +32,8 @@ def main(config_file_instance):
     torch.manual_seed(123+config["seed"])
     torch.cuda.manual_seed(123+config["seed"])
 
+    
+    
     Model = config["model"]
     inner_opt = config["inner_opt"]
     if "landmarks" in config["train_path"]:  # load landmark data
@@ -82,10 +86,13 @@ class config:
         self.num_epochs = num_epochs
         self.batch_size = batch_size
         self.gamma = gamma
+        df_ts = pd.DataFrame(columns=["accuracy", "loss"])
+        df_tr = pd.DataFrame(columns=["accuracy", "loss"])
         self.config = {
             "seed": 1,  # random seed
             "model": partial(Model, learning_rate=1e-1, p_iters=10, ps_eta=2e-1, pt_eta=2e-3),  # the model to be trained
             "inner_opt": None,  # optimizer, in FedReg, only the learning rate is used
+            "df_ts,df_tr": (df_ts, df_tr),
             "optimizer": FedReg,  # FL optimizer, can be FedAvg, FedProx, FedCurv or SCAFFOLD
             "model_param": (10,),  # the input of the model, used to initialize the model
             "inp_size": (784,),  # the input shape
@@ -106,18 +113,16 @@ class config:
         }
         pass
     def update_config(self):
-
-        self.config = {**self.config, **{
-            "optimizer": self.get_optimizer(algorithm),
-            "clients_per_round": self.clients_per_round,
-            "num_rounds": self.num_rounds,
-            "eval_every": self.eval_every,
-            "drop_percent": self.drop_percent,
-            "num_epochs": self.num_epochs,
-            "batch_size": self.batch_size,
-            "gamma": self.gamma
+        self.config = self.config | {"optimizer": self.get_optimizer(algorithm),
+            "clients_per_round": clients_per_round,
+            "num_rounds": num_rounds,
+            "eval_every": eval_every,
+            "drop_percent": drop_percent,
+            "num_epochs": num_epochs,
+            "batch_size": batch_size,
+            "gamma": gamma
             }
-        }
+        
     
     def get_optimizer(self,algorithm):
         match algorithm.lower():
@@ -140,18 +145,6 @@ class config:
         return self.config
 
 
-def run(configuration):
-    import threading
-    thread = threading.Thread(target=main, args=[configuration])
-    stdout = io.StringIO()
-    with contextlib.redirect_stdout(stdout):
-        thread.start()
-        prev = ""
-        while True:
-            if prev != stdout.getvalue():
-                prev = stdout.getvalue()
-                st.write(prev)
-
 st.header("Federated Learning Algorithms testing")
 algorithm = st.selectbox('Select Algorithm name:',('FedAvg', 'FedProx', 'FedReg', 'Scaffold', 'FedCurv'), index=2)
 st.write('You selected:', algorithm)
@@ -166,6 +159,7 @@ num_epochs = 5
 batch_size = 64
 gamma = 0.4
 config_file = config()
+
 with col1:
     clients_per_round = st.number_input("Clients per round", step=1, on_change=config_file.update_config())
     st.caption("number of clients sampled in each round")
@@ -187,5 +181,8 @@ if see_config:
     st.code(pprint.pformat(config_file.get_config(), indent=2))
 
 details = st.text_input("Enter experiments details")
-run = st.button("Run experiment", on_click=run(config_file.get_config()))
-st.caption("Click the button only once")
+run = st.button("Run experiment")
+if run:
+    st.header("running")
+    main(config_file.get_config())
+    st.warning("Finished Training")

@@ -3005,3 +3005,5 @@
 2021-12-04 13:22:17.206 | INFO     | FedUtils.models.utils:decode_stat:157 - Test_1 Accuracy: 0.9731873869895935
 2021-12-04 13:22:17.206 | INFO     | FedUtils.fed.fedavg:train:55 - -- TRAIN RESULTS --
 2021-12-04 13:22:17.281 | INFO     | FedUtils.models.utils:decode_stat:163 - Accuracy: 0.9781129360198975 Loss: 0.07253064960241318
+2023-03-09 18:17:01.037 | INFO     | FedUtils.fed.fedavg:train:31 - Train with 10 workers...
+2023-03-09 18:17:01.038 | INFO     | FedUtils.fed.fedavg:train:34 - -- Log At Round 0 --
