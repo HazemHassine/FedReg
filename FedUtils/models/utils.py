@@ -139,6 +139,7 @@ def decode_stat(stat):
             logger.info("Accuracy: {}".format(sum(tot_correct) / sum(num_samples)))
     elif len(stat) == 5:
         ids, groups, num_samples, tot_correct, losses = stat
+        print("should output acc, loss")
         logger.info("Accuracy: {} Loss: {}".format(sum(tot_correct) / sum(num_samples), sum(losses) / sum(num_samples)))
         return (sum(tot_correct) / sum(num_samples), sum(losses) / sum(num_samples))
     else:

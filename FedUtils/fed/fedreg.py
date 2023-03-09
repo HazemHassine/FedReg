@@ -105,10 +105,16 @@ class FedReg(Server):
                 test_data = decode_stat(stats)
                 logger.info("-- TRAIN RESULTS --")
                 train_data = decode_stat(stats_train)
+                print(test_data)
+                print(train_data)
                 try:
-                    self.df_ts.append(pd.DataFrame({"accuracy": test_data[0],"loss": test_data[1]}))
-                    self.df_tr.append(pd.DataFrame({"accuracy": train_data[0],"loss": train_data[1]}))
+                    self.df_ts = pd.concat([self.df_ts, pd.DataFrame({"accuracy": test_data[0].item(),"loss": test_data[1].item()})], ignore_index=True)
+                    self.df_tr = pd.concat([self.df_tr, pd.DataFrame({"accuracy": train_data[0].item(),"loss": train_data[1].item()})], ignore_index=True)
+                    print("added")
+                    print(self.df_ts)
+                    print(self.df_tr)
                 except TypeError:
+                    print("didn't append shit")
                     pass
             indices, selected_clients = self.select_clients(r, num_clients=self.clients_per_round)
             np.random.seed(r)
@@ -143,12 +149,21 @@ class FedReg(Server):
             stats_train = stats
         logger.info("-- TEST RESULTS --")
         test_data = decode_stat(stats)
+        print(test_data)
         logger.info("-- TRAIN RESULTS --")
         train_data = decode_stat(stats_train)
+        print(train_data)
         try:
-            self.df_ts.append(pd.DataFrame({"accuracy": test_data[0],"loss": test_data[1]}))
-            self.df_tr.append(pd.DataFrame({"accuracy": train_data[0],"loss": train_data[1]}))
+            self.df_ts = pd.concat([self.df_ts, pd.DataFrame({"accuracy": test_data[0].item(),"loss": test_data[1].item()})], ignore_index=True)
+            self.df_tr = pd.concat([self.df_tr, pd.DataFrame({"accuracy": train_data[0].item(),"loss": train_data[1].item()})], ignore_index=True)
+            print("added")
+            print(self.df_ts)
+            print(self.df_tr)
         except TypeError:
+            print("didn 't append shit finally")
             pass
-        self.df_ts.save_csv("results/tdf_ts.csv")
-        self.df_tr.save_csv("results/tdf_tr.csv")
+        print("self.df_ts",self.df_ts)
+        print("self.df_tr",self.df_tr)
+        self.df_ts.to_csv("results/tdf_ts.csv")
+        self.df_tr.to_csv("results/tdf_tr.csv")
+        print("finished")
