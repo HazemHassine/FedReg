@@ -4,7 +4,6 @@ from FedUtils.fed.fedreg import FedReg
 from torch.optim import SGD
 
 config = {
-
     "seed": 1,  # random seed
     "model": partial(Model, learning_rate=1e-1, p_iters=10, ps_eta=2e-1, pt_eta=2e-3),  # the model to be trained
     "inner_opt": None,  # optimizer, in FedReg, only the learning rate is used
@@ -25,6 +24,4 @@ config = {
     "test_transform": None,  # the preprocessing of test dasta
     "eval_train": True,  # whether to evaluate the model performance on the training data. Recommend to False when the training dataset is too large
     "gamma": 0.4,  # the value of gamma when FedReg is used, the weight for the proximal term when FedProx is used, or the value of lambda when FedCurv is used
-
-
 }
