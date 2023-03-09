@@ -14,7 +14,7 @@ class Client(object):
         self.num_train_samples = len(train_data["x"])
         self.num_test_samples = [len(ed["x"]) for ed in eval_data]
         drop_last = False
-        if traincusdataset:  # load data use costomer's dataset
+        if traincusdataset:  # load data use customer's dataset
             self.train_data = DataLoader(traincusdataset(train_data, transform=train_transform), batch_size=batchsize, shuffle=True, drop_last=drop_last)
             self.train_data_fortest = DataLoader(evalcusdataset(train_data, transform=test_transform), batch_size=batchsize, shuffle=False,)
             num_workers = 0
@@ -33,16 +33,34 @@ class Client(object):
         return self.model.get_param()
 
     def solve_grad(self):
-        bytes_w = self.model.size
-        grads, comp = self.model.get_gradients(self.train_data)
-        bytes_r = self.model.size
-        return ((self.num_train_samples, grads), (bytes_w, comp, bytes_r))
+        initial_model_size = self.model.size
+        gradients, computation_cost = self.model.get_gradients(self.train_data)
+        final_model_size = self.model.size
+        training_stats = (self.num_train_samples, gradients)
+        communication_stats = (initial_model_size, computation_cost, final_model_size)
+        return training_stats, communication_stats
+
+
+    # def solve_grad(self):
+    #     bytes_w = self.model.size
+    #     grads, comp = self.model.get_gradients(self.train_data)
+    #     bytes_r = self.model.size
+    #     return ((self.num_train_samples, grads), (bytes_w, comp, bytes_r))
 
     def solve_inner(self, num_epochs=1, step_func=None):
-        bytes_w = self.model.size
-        soln, comp, weight = self.model.solve_inner(self.train_data, num_epochs=num_epochs, step_func=step_func)
-        bytes_r = self.model.size
-        return (self.num_train_samples*weight, soln), (bytes_w, comp, bytes_r)
+        initial_model_size = self.model.size
+        updated_model_params, computation_cost, updated_model_size = self.model.solve_inner(self.train_data, num_epochs=num_epochs, step_func=step_func)
+        final_model_size = self.model.size
+        training_stats = (self.num_train_samples * updated_model_size, updated_model_params)
+        communication_stats = (initial_model_size, computation_cost, final_model_size)
+        return training_stats, communication_stats
+
+
+    # def solve_inner(self, num_epochs=1, step_func=None):
+    #     bytes_w = self.model.size
+    #     soln, comp, weight = self.model.solve_inner(self.train_data, num_epochs=num_epochs, step_func=step_func)
+    #     bytes_r = self.model.size
+    #     return (self.num_train_samples*weight, soln), (bytes_w, comp, bytes_r)
 
     def test(self):
         TC = []

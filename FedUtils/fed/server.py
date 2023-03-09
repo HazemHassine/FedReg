@@ -38,17 +38,32 @@ class Server(object):
         users, groups, train_data, test_data = dataset
         if len(groups) == 0:
             groups = [None for _ in users]
-        all_clients = [(u, g, train_data[u], [td[u] for td in test_data], Model, self.batch_size, self.train_transform, self.test_transform) for u, g in zip(users, groups)]
+        all_clients = []
+        for u, g in zip(users, groups):
+            all_clients.append((u, g, train_data[u], [td[u] for td in test_data], Model , self.batch_size, self.train_transform, self.test_transform))
+        # all_clients = [(u, g, train_data[u], [td[u] for td in test_data], Model
+        # , self.batch_size, self.train_transform, self.test_transform) for u, g in zip(users, groups)]
         return all_clients
 
     def set_param(self, state_dict):
+        '''
+        model.load_state_dict()
+        '''
+        
         self.model.set_param(state_dict)
         return True
 
     def get_param(self):
+        '''
+        return model.state_dict()
+        '''
         return self.model.get_param()
 
     def _aggregate(self, wstate_dicts):
+        '''
+        aggregates mutiple state dicts
+        returns an aggregated state dict
+        '''
         old_params = self.get_param()
         state_dict = {x: 0.0 for x in self.get_param()}
         wtotal = 0.0
@@ -61,6 +76,10 @@ class Server(object):
         return state_dict
 
     def aggregate(self, wstate_dicts):
+        '''
+        Aggregates multiple state dicts and then sets the aggregates(averaged) to self.model using self.set_params(state_dict)
+        uses self._aggregate(wstate_dicts)
+        '''
         state_dict = self._aggregate(wstate_dicts)
         return self.set_param(state_dict)
 

@@ -1,0 +1,6 @@
+2023-03-09 13:25:49.763 | INFO     | FedUtils.fed.fedreg:train:89 - Train with 10 workers...
+2023-03-09 13:25:49.763 | INFO     | FedUtils.fed.fedreg:train:95 - -- Log At Round 0 --
+2023-03-09 13:26:10.052 | INFO     | FedUtils.fed.fedreg:train:101 - -- TEST RESULTS --
+2023-03-09 13:26:10.052 | INFO     | FedUtils.models.utils:decode_stat:136 - Test_0 Accuracy: 0.09553109109401703
+2023-03-09 13:26:10.052 | INFO     | FedUtils.fed.fedreg:train:103 - -- TRAIN RESULTS --
+2023-03-09 13:26:10.083 | INFO     | FedUtils.models.utils:decode_stat:142 - Accuracy: 0.09827567636966705 Loss: 2.31231689453125

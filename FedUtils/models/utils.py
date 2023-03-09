@@ -5,11 +5,20 @@ from torch.utils.data import TensorDataset
 import numpy as np
 import torch
 from loguru import logger
+
+# PIL is now renamed to Pillow
 from PIL import Image
 import h5py
 
 
 def FSGM(model, inp, label, iters, eta):
+    '''
+    the function implements the FGSM attack to generate adversarial examples 
+    for the given model, inp, and label
+    this function is usually called from the generate fake method from a Model class
+    this usually the model argument will take the value of self, called from Model 
+    '''
+    
     inp.requires_grad = True
     minv, maxv = float(inp.min().detach().cpu().numpy()), float(inp.max().detach().cpu().numpy())
     for _ in range(iters):

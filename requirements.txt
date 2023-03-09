@@ -3,5 +3,5 @@ torchsummary
 importlib
 loguru
 thop
-PIL
+Pillow
 h5py
