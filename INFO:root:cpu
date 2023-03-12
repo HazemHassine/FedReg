@@ -1,0 +1,77 @@
+INFO:root:cpu
+INFO:root:Partitioning data
+Files already downloaded and verified
+Files already downloaded and verified
+INFO:root:averaging_weights: [[0.9834 0.2236 0.7332 0.8616 0.4416 0.641  0.0254 0.8382 0.9474 0.    ]
+ [0.0166 0.7764 0.2668 0.1384 0.5584 0.359  0.9746 0.1618 0.0526 1.    ]]
+INFO:root:Initializing nets
+INFO:root:Retrain? : True
+INFO:root:Training network 0. n_training: 28477
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+INFO:root:Training network 0
+INFO:root:n_training: 445
+INFO:root:n_test: 313
+INFO:root:>> Pre-Training Training accuracy: 0.03925975348526881
+INFO:root:>> Pre-Training Test accuracy: 0.1
+INFO:root:Epoch: 0 Loss: 1.945890
+INFO:root:Epoch: 1 Loss: 1.585406
+INFO:root:>> Training accuracy: 0.419461
+INFO:root:>> Test accuracy: 0.293400
+INFO:root: ** Training complete **
+INFO:root:saving local model-0
+INFO:root:Training network 1. n_training: 21523
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+INFO:root:Training network 1
+INFO:root:n_training: 337
+INFO:root:n_test: 313
+INFO:root:>> Pre-Training Training accuracy: 0.01221948613111555
+INFO:root:>> Pre-Training Test accuracy: 0.1
+INFO:root:Epoch: 0 Loss: 1.885915
+INFO:root:Epoch: 1 Loss: 1.495811
+INFO:root:>> Training accuracy: 0.475027
+INFO:root:>> Test accuracy: 0.285400
+INFO:root: ** Training complete **
+INFO:root:saving local model-1
+Files already downloaded and verified
+Files already downloaded and verified
+INFO:root:Computing Uniform ensemble accuracy
+INFO:root:Uniform ensemble (Train acc): 0.37232
+INFO:root:Uniform ensemble (Test acc): 0.4004
+INFO:root:==============================
+INFO:root:Weights shapes: [(32, 27), (32,), (64, 288), (64,), (128, 576), (128,), (128, 1152), (128,), (256, 1152), (256,), (256, 2304), (256,), (4096, 512), (512,), (512, 512), (512,), (512, 10), (10,)]
+INFO:root:init_channel_kernel_dims: [27, 288, 576, 1152, 1152, 2304, 512, 512, 10]
+INFO:root:Layer index: 1, init_num_kernel: 32
+INFO:root:weights bias: (32, 28)
+INFO:root:sigma_inv_prior shape: (28,)
+INFO:root:mean_prior shape: (28,)
+INFO:root:sigma_inv_layer shape: (28,)
+INFO:root:Number of global neurons is 35, gamma 7.000000
+INFO:root:***************Shape of global weights after match: (35, 28) ******************
+INFO:root:Branch A, Layer index: 1, Global weights out shapes: [(35, 27), (35,)]
+INFO:root:global inv sigma out shape: [(35, 27), (35,)]
+Files already downloaded and verified
+Files already downloaded and verified
+INFO:root:Re-training on local worker: 0, starting from layer: 2
+INFO:root:n_training: 445
+INFO:root:n_test: 313
+INFO:root:>> Pre-Training Training accuracy: 0.337184
+INFO:root:>> Pre-Training Test accuracy: 0.233200
+Traceback (most recent call last):
+  File "main.py", line 1583, in <module>
+    hungarian_weights, assignments_list = BBP_MAP(nets_list, model_meta_data, layer_type, net_dataidx_map, averaging_weights, args, device=device)
+  File "main.py", line 1331, in BBP_MAP
+    retrained_cnn = local_retrain((train_dl_local,test_dl_local), tempt_weights[worker_index], args, 
+  File "main.py", line 696, in local_retrain
+    loss.backward()
+  File "/usr/local/lib/python3.8/dist-packages/torch/_tensor.py", line 488, in backward
+    torch.autograd.backward(
+  File "/usr/local/lib/python3.8/dist-packages/torch/autograd/__init__.py", line 197, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt
+^C
