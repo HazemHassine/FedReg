@@ -1070,3 +1070,14 @@
 2023-03-09 19:03:02.488 | INFO     | FedUtils.models.utils:decode_stat:143 - Accuracy: 0.11245904862880707 Loss: 2.3027124404907227
 2023-03-09 19:03:02.488 | INFO     | FedUtils.models.utils:decode_stat:143 - Accuracy: 0.11245904862880707 Loss: 2.3027124404907227
 2023-03-09 19:03:02.488 | INFO     | FedUtils.models.utils:decode_stat:143 - Accuracy: 0.11245904862880707 Loss: 2.3027124404907227
+2023-03-12 18:29:49.139 | INFO     | FedUtils.fed.fedreg:train:90 - Train with 2 workers...
+2023-03-12 18:29:49.276 | INFO     | FedUtils.fed.fedreg:train:98 - -- Log At Round 0 --
+2023-03-12 18:30:08.746 | INFO     | FedUtils.fed.fedreg:train:104 - -- TEST RESULTS --
+2023-03-12 18:30:08.746 | INFO     | FedUtils.models.utils:decode_stat:136 - Test_0 Accuracy: 0.09553109109401703
+2023-03-12 18:30:08.746 | INFO     | FedUtils.fed.fedreg:train:106 - -- TRAIN RESULTS --
+2023-03-12 18:30:08.768 | INFO     | FedUtils.models.utils:decode_stat:143 - Accuracy: 0.09827567636966705 Loss: 2.31231689453125
+2023-03-12 18:30:09.692 | INFO     | FedUtils.fed.fedreg:train:144 - -- Log At Round 0 --
+2023-03-12 18:30:27.874 | INFO     | FedUtils.fed.fedreg:train:150 - -- TEST RESULTS --
+2023-03-12 18:30:27.874 | INFO     | FedUtils.models.utils:decode_stat:136 - Test_0 Accuracy: 0.10783679038286209
+2023-03-12 18:30:27.875 | INFO     | FedUtils.fed.fedreg:train:153 - -- TRAIN RESULTS --
+2023-03-12 18:30:27.901 | INFO     | FedUtils.models.utils:decode_stat:143 - Accuracy: 0.1041434183716774 Loss: 2.3081774711608887
